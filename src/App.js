@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   selectCollection,
   selectResults,
@@ -76,7 +75,6 @@ function App() {
   let results = useSelector(selectResults);
   let [showResultsState, setShowResultsState] = useState(false);
   let [showSelected, setShowSelected] = useState(false);
-  let [showCategoriesList, setShowCategoriesList] = useState(false);
   let [showAdd, setShowAdd] = useState(false);
   let [showAppetizers, setShowAppetizers] = useState(false);
   let [showEntrees, setShowEntrees] = useState(false);
@@ -109,24 +107,41 @@ function App() {
 
   useEffect(() => {
     if (showAppetizers) {
+      setShowAdd(false);
+      setShowEntrees(false);
+      setShowDesserts(false);
+      setShowDrinks(false);
+
       results = _.filter(collection, (item) => {
         return item.mealType === "Appetizer";
       });
       dispatch(setResults(results));
-    }
-    if (showEntrees) {
+    } else if (showEntrees) {
+      setShowAdd(false);
+      setShowAppetizers(false);
+      setShowDesserts(false);
+      setShowDrinks(false);
+
       results = _.filter(collection, (item) => {
         return item.mealType === "Entree";
       });
       dispatch(setResults(results));
-    }
-    if (showDesserts) {
+    } else if (showDesserts) {
+      setShowAppetizers(false);
+      setShowAdd(false);
+      setShowEntrees(false);
+      setShowDrinks(false);
+
       results = _.filter(collection, (item) => {
         return item.mealType === "Dessert";
       });
       dispatch(setResults(results));
-    }
-    if (showDrinks) {
+    } else if (showDrinks) {
+      setShowAppetizers(false);
+      setShowAdd(false);
+      setShowEntrees(false);
+      setShowDesserts(false);
+
       results = _.filter(collection, (item) => {
         return item.mealType === "Drink";
       });
@@ -141,6 +156,38 @@ function App() {
           isMobile={isMobile}
           handleAdd={() => {
             setShowAdd(true);
+            setShowAppetizers(false);
+            setShowEntrees(false);
+            setShowDesserts(false);
+            setShowDrinks(false);
+          }}
+          handleAppetizers={() => {
+            setShowAppetizers(true);
+            setShowAdd(false);
+            setShowEntrees(false);
+            setShowDesserts(false);
+            setShowDrinks(false);
+          }}
+          handleEntrees={() => {
+            setShowEntrees(true);
+            setShowAdd(false);
+            setShowAppetizers(false);
+            setShowDesserts(false);
+            setShowDrinks(false);
+          }}
+          handleDesserts={() => {
+            setShowDesserts(true);
+            setShowAppetizers(false);
+            setShowAdd(false);
+            setShowEntrees(false);
+            setShowDrinks(false);
+          }}
+          handleDrinks={() => {
+            setShowDrinks(true);
+            setShowAppetizers(false);
+            setShowAdd(false);
+            setShowEntrees(false);
+            setShowDesserts(false);
           }}
         />
         <div className="cover">

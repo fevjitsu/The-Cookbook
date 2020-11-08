@@ -6,8 +6,8 @@
   color: black;
   font-size: 1.5rem;
   overflow-y: scroll;
-  height: 60vh;
-  width: 100vw;
+  height: 60%;
+  width: 80%;
 }
 .get__collection__item__title {
   margin-top: 0.2rem;

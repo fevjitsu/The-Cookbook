@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
-export default function Navigation({ isMobile, handleAdd }) {
+export default function Navigation({
+  isMobile,
+  handleAdd,
+  handleAppetizers,
+  handleEntrees,
+  handleDrinks,
+  handleDesserts,
+}) {
   let [showCategoriesList, setShowCategoriesList] = useState(false);
 
   return (
@@ -38,16 +45,22 @@ export default function Navigation({ isMobile, handleAdd }) {
         </ul>
         {showCategoriesList ? (
           <div className={"categories-list"}>
-            <button onClick={() => {}} className={" category-list__button"}>
+            <button
+              onClick={handleAppetizers}
+              className={" category-list__button"}
+            >
               Appetizers
             </button>
-            <button onClick={() => {}} className={"category-list__button"}>
+            <button onClick={handleEntrees} className={"category-list__button"}>
               Entrées
             </button>
-            <button onClick={() => {}} className={"category-list__button"}>
+            <button
+              onClick={handleDesserts}
+              className={"category-list__button"}
+            >
               Desserts
             </button>
-            <button onClick={() => {}} className={"category-list__button"}>
+            <button onClick={handleDrinks} className={"category-list__button"}>
               Drinks
             </button>
           </div>
