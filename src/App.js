@@ -1,56 +1,155 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  selectCollection,
+  selectResults,
+  selectSelectedResult,
+  setCollectionAsync,
+  setResults,
+  setSelected,
+} from "./features/search/searchSlice";
+import Search from "./features/search/Search";
+import "./App.css";
+import CollectionList from "./features/lists/CollectionList";
+import GetCollectionItem from "./features/search/GetCollectionItem";
+import AddCollectionItem from "./features/search/AddCollectionItem";
+import _ from "lodash";
+import Navigation from "./Navigation";
 
 function App() {
+  const ShowResultsCollection = (results, display) => {
+    if (display)
+      return (
+        <React.Fragment>
+          <div className="results-list">
+            <CollectionList
+              collection={results}
+              handleClick={(e) => {
+                const chose = _.find(results, (item, key) => {
+                  return item.id === e.target.id;
+                });
+                if (chose) {
+                  dispatch(setSelected(chose));
+                  dispatch(setResults(undefined));
+                }
+              }}
+            />
+          </div>
+        </React.Fragment>
+      );
+  };
+  const ShowGetCollectionItem = (selected, display) => {
+    if (display)
+      return (
+        <React.Fragment>
+          <GetCollectionItem {...selected} />
+        </React.Fragment>
+      );
+  };
+  const ShowAddCollection = (display) => {
+    if (display)
+      return (
+        <React.Fragment>
+          <div className="add-recipe">
+            <AddCollectionItem />
+          </div>
+        </React.Fragment>
+      );
+  };
+  const ShowSearch = (collection, display) => {
+    if (display)
+      return (
+        <React.Fragment>
+          <h1>Discover a meal.</h1>
+          <Search
+            searchTitle={"Find!"}
+            placeHolder={"Search for a recipe"}
+            collection={collection}
+          />
+        </React.Fragment>
+      );
+  };
+  const dispatch = useDispatch();
+  const collection = useSelector(selectCollection);
+  let selected = useSelector(selectSelectedResult);
+  let results = useSelector(selectResults);
+  let [showResultsState, setShowResultsState] = useState(false);
+  let [showSelected, setShowSelected] = useState(false);
+  let [showCategoriesList, setShowCategoriesList] = useState(false);
+  let [showAdd, setShowAdd] = useState(false);
+  let [showAppetizers, setShowAppetizers] = useState(false);
+  let [showEntrees, setShowEntrees] = useState(false);
+  let [showDrinks, setShowDrinks] = useState(false);
+  let [showDesserts, setShowDesserts] = useState(false);
+  let [isMobile, setIsMobile] = useState(false);
+  let [showSearch, setShowSearch] = useState(true);
+  useEffect(() => {
+    dispatch(setCollectionAsync("portfolioApp/recipes"));
+    if (window.screen.width < 600) setIsMobile(true);
+  }, []);
+
+  useEffect(() => {
+    if (results) {
+      if (results.length > 0) {
+        setShowResultsState(true);
+      } else {
+        setShowResultsState(false);
+      }
+    } else {
+      setShowResultsState(false);
+    }
+
+    if (selected.title) {
+      setShowSelected(true);
+    } else {
+      setShowSelected(false);
+    }
+  }, [results, selected]);
+
+  useEffect(() => {
+    if (showAppetizers) {
+      results = _.filter(collection, (item) => {
+        return item.mealType === "Appetizer";
+      });
+      dispatch(setResults(results));
+    }
+    if (showEntrees) {
+      results = _.filter(collection, (item) => {
+        return item.mealType === "Entree";
+      });
+      dispatch(setResults(results));
+    }
+    if (showDesserts) {
+      results = _.filter(collection, (item) => {
+        return item.mealType === "Dessert";
+      });
+      dispatch(setResults(results));
+    }
+    if (showDrinks) {
+      results = _.filter(collection, (item) => {
+        return item.mealType === "Drink";
+      });
+      dispatch(setResults(results));
+    }
+  }, [showAppetizers, showEntrees, showDesserts, showDrinks]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <div className="container">
+        <Navigation
+          isMobile={isMobile}
+          handleAdd={() => {
+            setShowAdd(true);
+          }}
+        />
+        <div className="cover">
+          {ShowSearch(collection, showSearch)}
+          {ShowAddCollection(showAdd)}
+          {ShowGetCollectionItem(selected, showSelected)}
+          {ShowResultsCollection(results, showResultsState)}
+        </div>
+      </div>
     </div>
   );
 }
