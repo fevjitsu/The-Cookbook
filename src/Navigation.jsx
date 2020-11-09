@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 export default function Navigation({
   isMobile,
   handleAdd,
+  handleHome,
   handleAppetizers,
   handleEntrees,
   handleDrinks,
@@ -11,14 +13,23 @@ export default function Navigation({
   let [showCategoriesList, setShowCategoriesList] = useState(false);
 
   return (
-    <header>
-      <h2 onClick={() => {}}>The CookBook</h2>
+    <header className="animate__animated animate__fadeInDown">
+      <h2
+        onClick={() => {
+          setShowCategoriesList(false);
+          handleHome();
+        }}
+      >
+        <FontAwesomeIcon icon={faHome} />
+        &nbsp; The Community CookBook
+      </h2>
       <nav>
         <ul>
           <li>
             <span
               onClick={() => {
-                setShowCategoriesList(true);
+                setShowCategoriesList(!showCategoriesList);
+                handleHome();
               }}
               title="Categories"
             >
@@ -27,12 +38,18 @@ export default function Navigation({
           </li>
 
           <li>
-            <span onClick={handleAdd} title="Add yours">
+            <span
+              onClick={() => {
+                setShowCategoriesList(false);
+                handleAdd();
+              }}
+              title="Add yours"
+            >
               Add yours
             </span>
           </li>
 
-          {/* <li>
+          <li>
             <span
               onClick={() => {}}
               className="btn"
@@ -41,26 +58,31 @@ export default function Navigation({
             >
               <strike>Register/Log In</strike>
             </span>
-          </li> */}
+          </li>
         </ul>
         {showCategoriesList ? (
-          <div className={"categories-list"}>
+          <div
+            className={"animate__animated animate__fadeInDown categories__list"}
+          >
             <button
               onClick={handleAppetizers}
-              className={" category-list__button"}
+              className={" category__list__button"}
             >
               Appetizers
             </button>
-            <button onClick={handleEntrees} className={"category-list__button"}>
+            <button
+              onClick={handleEntrees}
+              className={"category__list__button"}
+            >
               Entrées
             </button>
             <button
               onClick={handleDesserts}
-              className={"category-list__button"}
+              className={"category__list__button"}
             >
               Desserts
             </button>
-            <button onClick={handleDrinks} className={"category-list__button"}>
+            <button onClick={handleDrinks} className={"category__list__button"}>
               Drinks
             </button>
           </div>

@@ -5,6 +5,7 @@
   max-height: 40vh;  
   display: block;
   justify-content: center;
+
 }
 .collection__list__container {
   margin: 0.5rem;
@@ -15,6 +16,11 @@
   cursor: pointer;
   color: #fff;
   font-size: 2rem;
+  -moz-transition: width 1s ease-in-out, left 1.5s ease-in-out;
+  -webkit-transition: width 1s ease-in-out, left 1.5s ease-in-out;
+  -moz-transition: width 1s ease-in-out, left 1.5s ease-in-out;
+  -o-transition: width 1s ease-in-out, left 1.5s ease-in-out;
+  transition: width 1s ease-in-out, left 1.5s ease-in-out;
 }
 .collection__list__container:hover {
   padding: 0.5rem;

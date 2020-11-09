@@ -99,11 +99,16 @@ header nav li:last-child {
 header h2 {
   cursor: pointer;
 }
-.category-list {
-  height: 10vh;
+.animate__fadeInDown {
+  animation-duration: 1500ms;
+}
+.animate__fadeInUp {
+  animation-duration: 1500ms;
+}
+.category__list {
   display: inline;
 }
-.category-list__button {
+.category__list__button {
   background: #ef3f5a;
   border: 0px solid transparent;
   color: white;
@@ -119,7 +124,7 @@ header h2 {
   -moz-transition: all 0.2s;
   transition: all 0.2s;
 }
-.category-list__button:hover {
+.category__list__button:hover {
   background: #d73851;
   border: 0px solid transparent;
   color: #fff;

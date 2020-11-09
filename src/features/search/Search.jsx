@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import styles from "./Search.module.css";
-
 import { setSearchedItem, setResults } from "./searchSlice";
 
 export default function Search({
@@ -11,11 +10,7 @@ export default function Search({
   collection,
 }) {
   let dispatch = useDispatch();
-  const getResults = (searchedTerm, collectionItems) => {
-    return _.filter(collectionItems, (item) => {
-      return item.title.toLowerCase().includes(searchedTerm.toLowerCase());
-    });
-  };
+
   let [searched, setSearched] = useState("");
   const handleChange = (e) => {
     setSearched(e.target.value.trim());
@@ -42,7 +37,11 @@ export default function Search({
       }
     }
   };
-
+  const getResults = (searchedTerm, collectionItems) => {
+    return _.filter(collectionItems, (item) => {
+      return item.title.toLowerCase().includes(searchedTerm.toLowerCase());
+    });
+  };
   return (
     <div className={styles.search__form__container}>
       <form className={"flex-form"} onSubmit={handleSubmit}>

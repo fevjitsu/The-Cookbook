@@ -7,7 +7,7 @@ import CollectionList from "../lists/CollectionList";
 import styles from "./Search.module.css";
 import { resetValue } from "./searchSlice";
 
-export default function Add(collection) {
+export default function Add({ collection, handleClose }) {
   const dispatch = useDispatch();
   let [submitted, setSubmitted] = useState(false);
   let time = new Date();
@@ -92,9 +92,7 @@ export default function Add(collection) {
         <div style={{ justifySelf: "flex-end" }}>
           <button
             className={styles.get__collection__item__close__button}
-            onClick={() => {
-              alert("handle close");
-            }}
+            onClick={handleClose}
           >
             Close
           </button>

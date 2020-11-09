@@ -15,6 +15,7 @@ export default function GetCollectionItem({
   notes,
   nutrition,
   preperation,
+  handleClose,
 }) {
   const dispatch = useDispatch();
   let [showIngredients, setShowIngredients] = useState(false);
@@ -29,27 +30,30 @@ export default function GetCollectionItem({
     return null;
   };
   return (
-    <div className={styles.get__collection__item__container}>
-      <button
-        className={styles.get__collection__item__close__button}
-        onClick={() => {
-          dispatch(setSelected({}));
-        }}
-      >
-        Close Recipe
-      </button>
+    <div id={id} className={styles.get__collection__item__container}>
+      <div>
+        <button
+          className={styles.get__collection__item__close__button}
+          onClick={handleClose}
+        >
+          close
+        </button>
+      </div>
+
       <div className={styles.get__collection__item__title}>
         {title} - {author}
       </div>
-      <img
-        className={styles.get__collection__item__image}
-        src={image}
-        alt={title}
-      />
+      <div>
+        <img
+          className={styles.get__collection__item__image}
+          src={image}
+          alt={title}
+        />
+      </div>
 
       <div>
         <div className={styles.get__collection__item__buttons}>
-          {ingredients ? (
+          {ingredients && (
             <button
               onClick={() => {
                 setShowIngredients(true);
@@ -62,8 +66,8 @@ export default function GetCollectionItem({
             >
               Ingredients
             </button>
-          ) : null}
-          {preperation ? (
+          )}
+          {preperation && (
             <button
               onClick={() => {
                 setShowPreperation(true);
@@ -76,8 +80,8 @@ export default function GetCollectionItem({
             >
               Preperation
             </button>
-          ) : null}
-          {cookingInstructions ? (
+          )}
+          {cookingInstructions && (
             <button
               onClick={() => {
                 setShowCookingInstructions(true);
@@ -90,8 +94,8 @@ export default function GetCollectionItem({
             >
               Instructions
             </button>
-          ) : null}
-          {notes ? (
+          )}
+          {notes && (
             <button
               onClick={() => {
                 setShowNotes(true);
@@ -104,8 +108,8 @@ export default function GetCollectionItem({
             >
               Notes
             </button>
-          ) : null}
-          {nutrition ? (
+          )}
+          {nutrition && (
             <button
               onClick={() => {
                 setShowNutrition(true);
@@ -118,9 +122,9 @@ export default function GetCollectionItem({
             >
               Nutrition
             </button>
-          ) : null}
+          )}
         </div>
-        {showIngredients ? (
+        {showIngredients && (
           <div>
             <div className={styles.get__collection__item__title}>
               Ingredients
@@ -131,9 +135,9 @@ export default function GetCollectionItem({
               })}
             </ul>
           </div>
-        ) : null}
+        )}
 
-        {showPreperation ? (
+        {showPreperation && (
           <div>
             <div className={styles.get__collection__item__title}>
               Preperation
@@ -144,9 +148,9 @@ export default function GetCollectionItem({
               })}
             </ul>
           </div>
-        ) : null}
+        )}
       </div>
-      {showCookingInstructions ? (
+      {showCookingInstructions && (
         <div>
           <div className={styles.get__collection__item__title}>
             Instructions
@@ -157,10 +161,10 @@ export default function GetCollectionItem({
             })}
           </ul>
         </div>
-      ) : null}
+      )}
 
       <div>
-        {showNotes ? (
+        {showNotes && (
           <div>
             <div className={styles.get__collection__item__title}>Notes</div>
             <ul>
@@ -169,8 +173,8 @@ export default function GetCollectionItem({
               })}
             </ul>
           </div>
-        ) : null}
-        {showNutrition ? (
+        )}
+        {showNutrition && (
           <div>
             <div className={styles.get__collection__item__title}>Nutrition</div>
             <ul>
@@ -179,7 +183,7 @@ export default function GetCollectionItem({
               })}
             </ul>
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );

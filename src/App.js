@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import "./App.css";
 import {
   selectCollection,
   selectResults,
@@ -9,157 +10,146 @@ import {
   setSelected,
 } from "./features/search/searchSlice";
 import Search from "./features/search/Search";
-import "./App.css";
-import CollectionList from "./features/lists/CollectionList";
-import GetCollectionItem from "./features/search/GetCollectionItem";
+import Results from "./features/search/Results";
 import AddCollectionItem from "./features/search/AddCollectionItem";
-import _ from "lodash";
+import GetCollectionItem from "./features/search/GetCollectionItem";
 import Navigation from "./Navigation";
-
+import _ from "lodash";
 function App() {
-  const ShowResultsCollection = (results, display) => {
-    if (display)
-      return (
-        <React.Fragment>
-          <div className="results-list">
-            <CollectionList
-              collection={results}
-              handleClick={(e) => {
-                const chose = _.find(results, (item, key) => {
-                  return item.id === e.target.id;
-                });
-                if (chose) {
-                  dispatch(setSelected(chose));
-                  dispatch(setResults(undefined));
-                }
-              }}
-            />
-          </div>
-        </React.Fragment>
-      );
-  };
-  const ShowGetCollectionItem = (selected, display) => {
-    if (display)
-      return (
-        <React.Fragment>
-          <GetCollectionItem {...selected} />
-        </React.Fragment>
-      );
-  };
-  const ShowAddCollection = (display) => {
-    if (display)
-      return (
-        <React.Fragment>
-          <div className="add-recipe">
-            <AddCollectionItem />
-          </div>
-        </React.Fragment>
-      );
-  };
-  const ShowSearch = (collection, display) => {
-    if (display)
-      return (
-        <React.Fragment>
-          <h1>Discover a meal.</h1>
-          <Search
-            searchTitle={"Find!"}
-            placeHolder={"Search for a recipe"}
-            collection={collection}
-          />
-        </React.Fragment>
-      );
-  };
   const dispatch = useDispatch();
   const collection = useSelector(selectCollection);
-  let selected = useSelector(selectSelectedResult);
+  const selected = useSelector(selectSelectedResult);
   let results = useSelector(selectResults);
-  let [showResultsState, setShowResultsState] = useState(false);
-  let [showSelected, setShowSelected] = useState(false);
+  let [showHome, setShowHome] = useState(true);
   let [showAdd, setShowAdd] = useState(false);
+  let [showResults, setShowResults] = useState(false);
+  let [showSelected, setShowSelected] = useState(false);
   let [showAppetizers, setShowAppetizers] = useState(false);
   let [showEntrees, setShowEntrees] = useState(false);
   let [showDrinks, setShowDrinks] = useState(false);
   let [showDesserts, setShowDesserts] = useState(false);
-  let [isMobile, setIsMobile] = useState(false);
-  let [showSearch, setShowSearch] = useState(true);
+
   useEffect(() => {
     dispatch(setCollectionAsync("portfolioApp/recipes"));
-    if (window.screen.width < 600) setIsMobile(true);
   }, []);
-
   useEffect(() => {
-    if (results) {
+    if (results)
       if (results.length > 0) {
-        setShowResultsState(true);
+        setShowResults(true);
       } else {
-        setShowResultsState(false);
+        setShowResults(false);
       }
-    } else {
-      setShowResultsState(false);
+  }, [results]);
+  useEffect(() => {
+    if (showHome) {
+      setShowHome(true);
+      setShowResults(false);
+      setShowAppetizers(false);
+      setShowEntrees(false);
+      setShowDesserts(false);
+      setShowDrinks(false);
+      setShowAdd(false);
     }
-
-    if (selected.title) {
-      setShowSelected(true);
+    if (showAppetizers) {
+      setShowHome(false);
+      setShowResults(false);
+      setShowAppetizers(true);
+      setShowEntrees(false);
+      setShowDesserts(false);
+      setShowDrinks(false);
+      setShowAdd(false);
+    }
+    if (showEntrees) {
+      setShowHome(false);
+      setShowResults(false);
+      setShowAppetizers(false);
+      setShowEntrees(true);
+      setShowDesserts(false);
+      setShowDrinks(false);
+      setShowAdd(false);
+    }
+    if (showDrinks) {
+      setShowHome(false);
+      setShowResults(false);
+      setShowAppetizers(false);
+      setShowEntrees(false);
+      setShowDesserts(false);
+      setShowDrinks(true);
+      setShowAdd(false);
+    }
+    if (showDesserts) {
+      setShowHome(false);
+      setShowResults(false);
+      setShowAppetizers(false);
+      setShowEntrees(false);
+      setShowDesserts(true);
+      setShowDrinks(false);
+      setShowAdd(false);
+    }
+    if (showAdd) {
+      setShowHome(false);
+      setShowResults(false);
+      setShowAppetizers(false);
+      setShowEntrees(false);
+      setShowDesserts(true);
+      setShowDrinks(false);
+      setShowAdd(true);
+    }
+  }, [
+    showHome,
+    showAppetizers,
+    showEntrees,
+    showDrinks,
+    showDesserts,
+    showAdd,
+  ]);
+  useEffect(() => {
+    if (selected) {
+      if (selected.id) {
+        setShowSelected(true);
+      }
     } else {
       setShowSelected(false);
     }
-  }, [results, selected]);
-
-  useEffect(() => {
-    if (showAppetizers) {
-      setShowAdd(false);
-      setShowEntrees(false);
-      setShowDesserts(false);
-      setShowDrinks(false);
-
-      results = _.filter(collection, (item) => {
-        return item.mealType === "Appetizer";
-      });
-      dispatch(setResults(results));
-    } else if (showEntrees) {
-      setShowAdd(false);
-      setShowAppetizers(false);
-      setShowDesserts(false);
-      setShowDrinks(false);
-
-      results = _.filter(collection, (item) => {
-        return item.mealType === "Entree";
-      });
-      dispatch(setResults(results));
-    } else if (showDesserts) {
-      setShowAppetizers(false);
-      setShowAdd(false);
-      setShowEntrees(false);
-      setShowDrinks(false);
-
-      results = _.filter(collection, (item) => {
-        return item.mealType === "Dessert";
-      });
-      dispatch(setResults(results));
-    } else if (showDrinks) {
-      setShowAppetizers(false);
-      setShowAdd(false);
-      setShowEntrees(false);
-      setShowDesserts(false);
-
-      results = _.filter(collection, (item) => {
-        return item.mealType === "Drink";
-      });
-      dispatch(setResults(results));
-    }
-  }, [showAppetizers, showEntrees, showDesserts, showDrinks]);
-
+  }, [selected]);
+  const handleClickSelectedItem = (e) => {
+    const recipeName = e.target.textContent;
+    const foundItem = _.find(collection, (item) => {
+      return item.title === recipeName;
+    });
+    dispatch(setSelected(foundItem));
+    setShowHome(false);
+    setShowResults(false);
+    setShowAppetizers(false);
+    setShowEntrees(false);
+    setShowDesserts(false);
+    setShowDrinks(false);
+    setShowAdd(false);
+    setShowSelected(true);
+  };
   return (
     <div className="App">
       <div className="container">
         <Navigation
-          isMobile={isMobile}
           handleAdd={() => {
             setShowAdd(true);
+            setShowResults(false);
             setShowAppetizers(false);
             setShowEntrees(false);
             setShowDesserts(false);
             setShowDrinks(false);
+            setShowHome(false);
+            setShowSelected(false);
+          }}
+          handleHome={() => {
+            setShowHome(true);
+            setShowAppetizers(false);
+            setShowAdd(false);
+            setShowEntrees(false);
+            setShowDesserts(false);
+            setShowDrinks(false);
+            setShowResults(false);
+            setShowSelected(false);
           }}
           handleAppetizers={() => {
             setShowAppetizers(true);
@@ -167,6 +157,9 @@ function App() {
             setShowEntrees(false);
             setShowDesserts(false);
             setShowDrinks(false);
+            setShowHome(false);
+            setShowResults(false);
+            setShowSelected(false);
           }}
           handleEntrees={() => {
             setShowEntrees(true);
@@ -174,6 +167,9 @@ function App() {
             setShowAppetizers(false);
             setShowDesserts(false);
             setShowDrinks(false);
+            setShowHome(false);
+            setShowResults(false);
+            setShowSelected(false);
           }}
           handleDesserts={() => {
             setShowDesserts(true);
@@ -181,6 +177,9 @@ function App() {
             setShowAdd(false);
             setShowEntrees(false);
             setShowDrinks(false);
+            setShowHome(false);
+            setShowResults(false);
+            setShowSelected(false);
           }}
           handleDrinks={() => {
             setShowDrinks(true);
@@ -188,13 +187,140 @@ function App() {
             setShowAdd(false);
             setShowEntrees(false);
             setShowDesserts(false);
+            setShowHome(false);
+            setShowResults(false);
+            setShowSelected(false);
           }}
         />
         <div className="cover">
-          {ShowSearch(collection, showSearch)}
-          {ShowAddCollection(showAdd)}
-          {ShowGetCollectionItem(selected, showSelected)}
-          {ShowResultsCollection(results, showResultsState)}
+          <div>{showHome && <Search collection={collection} />}</div>
+          <div>
+            {showAdd && (
+              <AddCollectionItem
+                handleClose={() => {
+                  setShowHome(true);
+                  setShowResults(false);
+                  setShowAppetizers(false);
+                  setShowEntrees(false);
+                  setShowDesserts(false);
+                  setShowDrinks(false);
+                  setShowAdd(false);
+                  setShowSelected(false);
+                }}
+              />
+            )}
+            {showResults && (
+              <Results
+                unordered={true}
+                results={results}
+                handleClose={() => {
+                  setShowHome(true);
+                  setShowResults(false);
+                  setShowAppetizers(false);
+                  setShowEntrees(false);
+                  setShowDesserts(false);
+                  setShowDrinks(false);
+                  setShowAdd(false);
+                  setShowSelected(false);
+                }}
+                handleClick={handleClickSelectedItem}
+              />
+            )}
+          </div>
+          <div>
+            {showAppetizers && (
+              <Results
+                handleClose={() => {
+                  setShowHome(true);
+                  setShowResults(false);
+                  setShowAppetizers(false);
+                  setShowEntrees(false);
+                  setShowDesserts(false);
+                  setShowDrinks(false);
+                  setShowAdd(false);
+                  setShowSelected(false);
+                }}
+                results={_.filter(
+                  collection,
+                  (item) => item.mealType === "Appetizer"
+                )}
+                handleClick={handleClickSelectedItem}
+              />
+            )}
+            {showEntrees && (
+              <Results
+                handleClick={handleClickSelectedItem}
+                handleClose={() => {
+                  setShowHome(true);
+                  setShowResults(false);
+                  setShowAppetizers(false);
+                  setShowEntrees(false);
+                  setShowDesserts(false);
+                  setShowDrinks(false);
+                  setShowAdd(false);
+                  setShowSelected(false);
+                }}
+                results={_.filter(
+                  collection,
+                  (item) => item.mealType === "Entree"
+                )}
+              />
+            )}
+            {showDrinks && (
+              <Results
+                handleClick={handleClickSelectedItem}
+                handleClose={() => {
+                  setShowHome(true);
+                  setShowResults(false);
+                  setShowAppetizers(false);
+                  setShowEntrees(false);
+                  setShowDesserts(false);
+                  setShowDrinks(false);
+                  setShowAdd(false);
+                  setShowSelected(false);
+                }}
+                results={_.filter(
+                  collection,
+                  (item) => item.mealType === "Drink"
+                )}
+              />
+            )}
+            {showDesserts && (
+              <Results
+                handleClick={handleClickSelectedItem}
+                handleClose={() => {
+                  setShowHome(true);
+                  setShowResults(false);
+                  setShowAppetizers(false);
+                  setShowEntrees(false);
+                  setShowDesserts(false);
+                  setShowDrinks(false);
+                  setShowAdd(false);
+                  setShowSelected(false);
+                }}
+                results={_.filter(
+                  collection,
+                  (item) => item.mealType === "Dessert"
+                )}
+              />
+            )}
+
+            {showSelected && (
+              <GetCollectionItem
+                handleClose={() => {
+                  setShowHome(true);
+                  setShowResults(false);
+                  setShowAppetizers(false);
+                  setShowEntrees(false);
+                  setShowDesserts(false);
+                  setShowDrinks(false);
+                  setShowAdd(false);
+                  setShowSelected(false);
+                }}
+                {...selected}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
