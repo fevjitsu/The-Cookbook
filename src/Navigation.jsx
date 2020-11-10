@@ -66,24 +66,39 @@ export default function Navigation({
             className={"animate__animated animate__fadeInDown categories__list"}
           >
             <button
-              onClick={handleAppetizers}
+              onClick={() => {
+                handleAppetizers();
+                setShowCategoriesList(false);
+              }}
               className={" category__list__button"}
             >
               Appetizers
             </button>
             <button
-              onClick={handleEntrees}
+              onClick={() => {
+                handleEntrees();
+                setShowCategoriesList(false);
+              }}
               className={"category__list__button"}
             >
               Entrées
             </button>
             <button
-              onClick={handleDesserts}
+              onClick={() => {
+                handleDesserts();
+                setShowCategoriesList(false);
+              }}
               className={"category__list__button"}
             >
               Desserts
             </button>
-            <button onClick={handleDrinks} className={"category__list__button"}>
+            <button
+              onClick={() => {
+                handleDrinks();
+                setShowCategoriesList(false);
+              }}
+              className={"category__list__button"}
+            >
               Drinks
             </button>
           </div>
