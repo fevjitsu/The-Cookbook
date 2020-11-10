@@ -1,23 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { firebase } from "../../db/firebase";
 import database from "../../db/firebase";
-import Dropzone from "react-dropzone";
-import CollectionList from "../lists/CollectionList";
 import styles from "./Search.module.css";
-import { resetValue } from "./searchSlice";
 
-export default function Add({ collection, handleClose }) {
-  const dispatch = useDispatch();
-  let [submitted, setSubmitted] = useState(false);
-  let time = new Date();
+export default function Add({ collection, handleClose, handleRedirect }) {
   let [title, setTitle] = useState("");
   let [author, setAuthor] = useState("");
-  let [ingredients, setIngredients] = useState("");
-  let [preperation, setPreperation] = useState("");
-  let [cookingInstructions, setCookingInstructions] = useState("");
-  let [nutrition, setNutrition] = useState("");
-  let [notes, setNotes] = useState("");
   let [mealType, setMealType] = useState("");
   let [img, setImg] = useState(undefined);
   let [imageURL, setImageURL] = useState(
@@ -48,6 +36,7 @@ export default function Add({ collection, handleClose }) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const recipeCollection = database.ref(`portfolioApp/recipes`);
     const title = e.target.elements.title.value.trim();
     const mealType = e.target.elements.mealType.value.trim();
@@ -57,7 +46,6 @@ export default function Add({ collection, handleClose }) {
     const preperation = e.target.elements.preperation.value.trim();
     const nutrition = e.target.elements.nutrition.value.trim();
     const notes = e.target.elements.notes.value.trim();
-    const created = Date.now();
     recipeCollection
       .push({
         title,
@@ -69,11 +57,10 @@ export default function Add({ collection, handleClose }) {
         notes,
         mealType,
         image: imageURL,
-        created,
+        created: Date(),
       })
       .then(() => {
-        setSubmitted(true);
-        alert("handle close");
+        handleClose();
       })
       .catch((e) => {
         console.log("failed", e);
@@ -149,6 +136,7 @@ export default function Add({ collection, handleClose }) {
               type="text"
               id="author"
               name="author"
+              value={author}
               placeholder="Author"
               className={styles.search__component__input}
               required

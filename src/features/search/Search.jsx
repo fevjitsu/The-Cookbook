@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import _ from "lodash";
 import styles from "./Search.module.css";
 import { setSearchedItem, setResults } from "./searchSlice";
-
 export default function Search({
   placeHolder = "Search",
   searchTitle = "",

@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import styles from "./Search.module.css";
-import { setSelected } from "./searchSlice";
 import _ from "lodash";
-import { Counter } from "../counter/Counter";
 export default function GetCollectionItem({
   id,
   title,
@@ -17,7 +14,6 @@ export default function GetCollectionItem({
   preperation,
   handleClose,
 }) {
-  const dispatch = useDispatch();
   let [showIngredients, setShowIngredients] = useState(false);
   let [showPreperation, setShowPreperation] = useState(false);
   let [showCookingInstructions, setShowCookingInstructions] = useState(false);
@@ -41,7 +37,8 @@ export default function GetCollectionItem({
       </div>
 
       <div className={styles.get__collection__item__title}>
-        {title} - {author}
+        {title} - {author} <br />
+        {mealType}
       </div>
       <div>
         <img

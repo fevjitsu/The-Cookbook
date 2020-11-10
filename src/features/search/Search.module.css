@@ -81,10 +81,7 @@
   max-height: 50vh;
   overflow-y: scroll;
 }
-.search__form__container {
-}
-.search__form__container .flex-form {
-}
+
 .search__component__input {
   padding: 1rem;
   font-size: 1.8rem;
@@ -106,14 +103,8 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .search__form__container {
-  }
-  .search__form__container .flex-form {
-    display: inline;
-  }
   .add__collection__form {
     padding: 0.2rem;
-
     max-width: 100vw;
   }
 

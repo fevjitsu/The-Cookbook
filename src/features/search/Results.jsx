@@ -1,6 +1,6 @@
 import React from "react";
 import _ from "lodash";
-import styles from "./Lists.module.css";
+import styles from "./Results.module.css";
 export default function Results({
   unordered,
   results,

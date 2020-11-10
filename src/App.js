@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import {
@@ -6,7 +6,6 @@ import {
   selectResults,
   selectSelectedResult,
   setCollectionAsync,
-  setResults,
   setSelected,
 } from "./features/search/searchSlice";
 import Search from "./features/search/Search";
@@ -17,6 +16,7 @@ import Navigation from "./Navigation";
 import _ from "lodash";
 function App() {
   const dispatch = useDispatch();
+  const stableDispatch = useCallback(dispatch, []);
   const collection = useSelector(selectCollection);
   const selected = useSelector(selectSelectedResult);
   let results = useSelector(selectResults);
@@ -30,8 +30,8 @@ function App() {
   let [showDesserts, setShowDesserts] = useState(false);
 
   useEffect(() => {
-    dispatch(setCollectionAsync("portfolioApp/recipes"));
-  }, []);
+    stableDispatch(setCollectionAsync("portfolioApp/recipes"));
+  }, [stableDispatch]);
   useEffect(() => {
     if (results)
       if (results.length > 0) {
@@ -197,6 +197,7 @@ function App() {
           <div>
             {showAdd && (
               <AddCollectionItem
+                handleRedirect={() => {}}
                 handleClose={() => {
                   setShowHome(true);
                   setShowResults(false);

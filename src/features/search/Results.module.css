@@ -6,11 +6,17 @@
 .results__list__root ul {
   list-style-type: none;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 .results__list__root ol {
   list-style-type: upper-roman;
   list-style-position: inside;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 .results__list__item__close__button__container {
   display: flex;

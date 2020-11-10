@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faList, faPlus } from "@fortawesome/free-solid-svg-icons";
 export default function Navigation({
   isMobile,
   handleAdd,
@@ -33,7 +33,8 @@ export default function Navigation({
               }}
               title="Categories"
             >
-              Categories
+              <FontAwesomeIcon icon={faList} />
+              &nbsp; Categories
             </span>
           </li>
 
@@ -45,11 +46,11 @@ export default function Navigation({
               }}
               title="Add yours"
             >
-              Add yours
+              <FontAwesomeIcon icon={faPlus} /> &nbsp; Add yours
             </span>
           </li>
 
-          <li>
+          {/* <li>
             <span
               onClick={() => {}}
               className="btn"
@@ -58,7 +59,7 @@ export default function Navigation({
             >
               <strike>Register/Log In</strike>
             </span>
-          </li>
+          </li> */}
         </ul>
         {showCategoriesList ? (
           <div
