@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { firebase } from "../../db/firebase";
 import database from "../../db/firebase";
 import styles from "./Search.module.css";
-
+import Modal from "react-modal";
 export default function Add({ collection, handleClose, handleRedirect }) {
   let [title, setTitle] = useState("");
   let [author, setAuthor] = useState("");
@@ -11,6 +11,37 @@ export default function Add({ collection, handleClose, handleRedirect }) {
   let [imageURL, setImageURL] = useState(
     "https://firebasestorage.googleapis.com/v0/b/portfolio-231ae.appspot.com/o/images%2Fno-image.jpg?alt=media&token=c0c48b13-bbc5-4d7d-a563-26818e564ee8"
   );
+  let [messageSent, setMessageSent] = useState(false);
+  const AlertUserModal = () => {
+    return (
+      <Modal
+        className={`${styles.modal__root}`}
+        isOpen={messageSent}
+        onRequestClose={() => {
+          setMessageSent(false);
+        }}
+      >
+        <div>
+          <h2>
+            {" "}
+            Your delicious recipe was added to the list of recipes shared by
+            others like yourself.
+          </h2>
+        </div>
+
+        <div>
+          <button
+            className={`${styles.get__collection__item__button} ${styles.get__collection__item__close__button}`}
+            onClick={() => {
+              setMessageSent(false);
+            }}
+          >
+            close
+          </button>
+        </div>
+      </Modal>
+    );
+  };
   const handleUpload = (image) => {
     const uploadTask = firebase
       .storage()
@@ -62,6 +93,9 @@ export default function Add({ collection, handleClose, handleRedirect }) {
       .then(() => {
         handleClose();
       })
+      .then(() => {
+        setMessageSent(true);
+      })
       .catch((e) => {
         console.log("failed", e);
       });
@@ -74,6 +108,7 @@ export default function Add({ collection, handleClose, handleRedirect }) {
 
   return (
     <React.Fragment>
+      <AlertUserModal />
       <h1>Add a recipe.</h1>
       <form className={styles.add__collection__form} onSubmit={handleSubmit}>
         <div style={{ justifySelf: "flex-end" }}>
