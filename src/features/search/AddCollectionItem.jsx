@@ -90,9 +90,7 @@ export default function Add({ collection, handleClose, handleRedirect }) {
         image: imageURL,
         created: Date(),
       })
-      .then(() => {
-        handleClose();
-      })
+      .then(() => handleClose)
       .then(() => {
         setMessageSent(true);
       })
@@ -180,7 +178,6 @@ export default function Add({ collection, handleClose, handleRedirect }) {
                 setAuthor(nAuthor);
               }}
             />
-            {img ? <div className={styles.title}>File uploaded!</div> : null}
           </div>
           <div className={styles.input__items__container}>
             <div>
